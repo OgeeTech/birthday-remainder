@@ -1,5 +1,4 @@
-
-
+// In client/src/js/script.js
 document.getElementById("form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -12,7 +11,8 @@ document.getElementById("form").addEventListener("submit", async (e) => {
     };
 
     try {
-        const res = await fetch("https://birthday-remainder-ltti.onrender.com/api/users", {
+        // Use relative path since API is on same domain
+        const res = await fetch("/api/users", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
@@ -28,7 +28,7 @@ document.getElementById("form").addEventListener("submit", async (e) => {
         alert(result.message);
         e.target.reset();
     } catch (err) {
-        alert("Server not reachable");
+        alert("Server error. Please try again.");
         console.error(err);
     }
 });
