@@ -13,7 +13,7 @@ const userRoutes = require("./routes/user.routes");
 
 const app = express();
 
-
+// ⬇ FIXED CORS CONFIGURATION ⬇
 app.use(cors({
     origin: [
         'https://bdremindeer.netlify.app',
@@ -21,8 +21,12 @@ app.use(cors({
         'http://127.0.0.1:5500'
     ],
     credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
+
+// ⬇ HANDLE PREFLIGHT REQUESTS ⬇
+app.options('*', cors()); // Enable preflight for all routes
 
 app.use(express.json());
 
@@ -30,8 +34,6 @@ connectDB();
 
 // API Routes
 app.use("/api/users", userRoutes);
-
-
 
 // Health check
 app.get("/health", (req, res) => {
@@ -42,7 +44,7 @@ app.get("/health", (req, res) => {
     });
 });
 
-// Root endpoint (optional)
+// Root endpoint
 app.get("/", (req, res) => {
     res.json({
         message: "Birthday Reminder API",
